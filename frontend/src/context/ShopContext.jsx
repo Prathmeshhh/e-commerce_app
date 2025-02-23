@@ -9,7 +9,7 @@ export const ShopContext = createContext();
 const ShopContextProvider = (props) => {
   const currency = "Rs";
   const delivery_fee = 50;
-  const backendUrl = process.env.VITE_BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [cartItems, setCartItems] = useState({});
@@ -30,7 +30,7 @@ const ShopContextProvider = (props) => {
     if (token) {
       try {
         await axios.post(
-          `${backendUrl}/api/product/list`,
+          backendUrl + "/api/cart/get",
           { itemId },
           { headers: { token } }
         );
@@ -61,7 +61,7 @@ const ShopContextProvider = (props) => {
     if (token) {
       try {
         await axios.post(
-          `${backendUrl}/api/product/list`,
+          backendUrl + "/api/cart/update",
           { itemId, quantity },
           { headers: { token } }
         );
@@ -87,7 +87,7 @@ const ShopContextProvider = (props) => {
 
   const getProductsData = async () => {
     try {
-      const response = await axios.get(`${backendUrl}/api/product/list`);
+      const response = await axios.get(backendUrl + '/api/product/list');
       if (response.data.success) {
         setProducts(response.data.products);
       } else {
